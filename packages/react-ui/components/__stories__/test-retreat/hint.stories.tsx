@@ -1,88 +1,9 @@
 import { CSFStory } from 'creevey';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Hint } from '../../Hint'; // 1
-import { Input } from '../../Input'; // 1
 
-export default { title: 'TR 2' };
-
-
-export const InputWithError: CSFStory<JSX.Element> = () => {
-  const [value, setValue] = useState<string>('');
-  const isError = value === 'error';
-  const disabled = value === 'disabled';
-
-  return (
-    <section>
-      <Input
-        value={value}
-        error={isError}
-        disabled={disabled}
-        onChange={event => setValue(event.currentTarget.value)}
-      />
-    </section>
-  );
-};
-
-/**
- *  Input.
- *
- *  0. История InputDefault
- *  1. Найти элемент на странице
- *  2. focus
- *  3. 📸 состояние focus
- *  4. ввести текст err
- *  5. 📸 состояние с текстом
- *  7. ввести текст error
- *  8. 📸 состояние error
- *  9. ввести текст disable
- *  10. 📸 состояние disable
- *
- */
-
-InputWithError.story = {
-  parameters: {
-    creevey: {
-      tests: {
-        async itemSelected() {
-          const element = await this.browser.findElement({ css: '#test-element' });
-          const input = await this.browser.findElement({ css: '[data-comp-name~=Input]' });
-
-          await this.browser
-            .actions({ bridge: true })
-            .click(input)
-            .perform();
-
-          const focused = await element.takeScreenshot();
-
-          await this.browser
-            .actions({ bridge: true })
-            .sendKeys('err')
-            .perform();
-
-          const typed = await element.takeScreenshot();
-
-          await this.browser
-            .actions({ bridge: true })
-            .sendKeys('or')
-            .perform();
-
-          const withError = await element.takeScreenshot();
-
-          await this.browser
-            .actions({ bridge: true })
-            .doubleClick(input)
-            .sendKeys('disabled')
-            .perform();
-
-          const disabled = await element.takeScreenshot();
-
-          await this.expect({ focused, typed, withError, disabled }).to.matchImages();
-        },
-      },
-    },
-  },
-};
+export default { title: 'TR Hint' };
 
 const changingTextTimeout = 0;
 
@@ -160,3 +81,21 @@ HintTest.story = {
     },
   },
 };
+
+/**
+ *  Hint. Хинт появляется при наведении курсора на элемент
+ *
+ *  0. История TextWithHint
+ *  1. Найти элемент на странице
+ *  2. 📸 хинт отсутствует
+ *  3. Навести на элемент
+ *  4. 📸 хинт появился
+ *  5. Убрать курсор с элемента
+ *  6. 📸 хинт исчез
+ *  Profit!
+ */
+
+export const SimpleHint: CSFStory<JSX.Element> = () => {
+  return <Hint text="World">Hello</Hint>;
+};
+//В storybook не анимируется hint при наведении на него
