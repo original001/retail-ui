@@ -297,3 +297,11 @@ UsingOnKeyDown.story = {
     },
   },
 };
+
+export const UsingDefaultValue: CSFStory<JSX.Element> = () => (
+  <Select width="150px" items={['oneoneone', 'twotwotwo', 'threethree']} defaultValue={'threethree'} />
+);
+
+export const Disabled: CSFStory<JSX.Element> = () => (
+  <Select width="150px" items={['oneoneone', 'twotwotwo', 'threethree']} disabled />
+);
