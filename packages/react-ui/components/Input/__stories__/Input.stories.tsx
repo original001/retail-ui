@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchIcon from '@skbkontur/react-icons/Search';
 import { CSFStory } from 'creevey';
 
@@ -15,122 +15,287 @@ const styles = {
 
 export default { title: 'Input' };
 
-export const InputsWithDifferentStates: CSFStory<JSX.Element> = () => (
-  <div>
-    <div>
-      <div style={styles}>Warning</div>
-      <div id="warning-small-input-wrapper" style={styles}>
-        <Input size="small" warning />
-      </div>
-      <div id="warning-large-input-wrapper" style={styles}>
-        <Input size="large" warning />
-      </div>
-    </div>
+/**
+ *  Input.
+ *
+ *  0. История InputsWithDifferentStates
+ *  1. Найти элемент на странице
+ *  2. focus
+ *  3. 📸 состояние focus
+ *  4. ввести текст err
+ *  5. 📸 состояние с текстом
+ *  7. ввести текст error
+ *  8. 📸 состояние error
+ *  9. ввести текст disable
+ *  10. 📸 состояние disable
+ *
+ */
 
-    <div>
-      <div style={styles}>Error</div>
-      <div id="error-small-input-wrapper" style={styles}>
-        <Input size="small" error />
-      </div>
-      <div id="error-large-input-wrapper" style={styles}>
-        <Input size="large" error />
-      </div>
-    </div>
+export const InputsWithDifferentStates: CSFStory<JSX.Element> = () => {
+  const [value, setValue] = useState<string>('');
+  const isError = value === 'error';
+  const disabled = value === 'disabled';
+  const warning = value === 'warning';
 
+  return (
     <div>
-      <div style={styles}>Disabled</div>
-      <div id="disabled-small-input-wrapper" style={styles}>
-        <Input size="small" disabled />
+      <div>
+        <div style={styles}>Plain</div>
+        <div id="warning-small-input-wrapper" style={styles}>
+          <Input
+            size="small"
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
+        <div id="warning-large-input-wrapper" style={styles}>
+          <Input
+            size="large"
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
       </div>
-      <div id="disabled-large-input-wrapper" style={styles}>
-        <Input size="large" disabled />
-      </div>
-    </div>
 
-    <div>
-      <div style={styles}>
-        Disabled
-        <br /> (with text)
+      <div>
+        <div style={styles}>Disabled</div>
+        <div id="disabled-small-input-wrapper" style={styles}>
+          <Input size="small" disabled />
+        </div>
+        <div id="disabled-large-input-wrapper" style={styles}>
+          <Input size="large" disabled />
+        </div>
       </div>
-      <div id="disabled-text-small-input-wrapper" style={styles}>
-        <Input size="small" value="Some text" disabled />
-      </div>
-      <div id="disabled-text-large-input-wrapper" style={styles}>
-        <Input size="large" value="Some text" disabled />
-      </div>
-    </div>
 
-    <div>
-      <div style={styles}>Placeholder</div>
-      <div id="placeholder-small-input-wrapper" style={styles}>
-        <Input size="small" placeholder="Placeholder" />
+      <div>
+        <div style={styles}>Placeholder</div>
+        <div id="placeholder-small-input-wrapper" style={styles}>
+          <Input
+            size="small"
+            placeholder="Placeholder"
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
+        <div id="placeholder-large-input-wrapper" style={styles}>
+          <Input
+            size="large"
+            placeholder="Placeholder"
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
       </div>
-      <div id="placeholder-large-input-wrapper" style={styles}>
-        <Input size="large" placeholder="Placeholder" />
-      </div>
-    </div>
 
-    <div>
-      <div style={styles}>Password</div>
-      <div id="password-small-input-wrapper" style={styles}>
-        <Input size="small" value="password" type="password" />
+      <div>
+        <div style={styles}>Password</div>
+        <div id="password-small-input-wrapper" style={styles}>
+          <Input
+            size="small"
+            type="password"
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
+        <div id="password-large-input-wrapper" style={styles}>
+          <Input
+            size="large"
+            type="password"
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
       </div>
-      <div id="password-large-input-wrapper" style={styles}>
-        <Input size="large" value="password" type="password" />
-      </div>
-    </div>
 
-    <div>
-      <div style={styles}>Borderless</div>
-      <div id="borderless-small-input-wrapper" style={styles}>
-        <Input size="small" borderless />
+      <div>
+        <div style={styles}>Borderless</div>
+        <div id="borderless-small-input-wrapper" style={styles}>
+          <Input
+            size="small"
+            borderless
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
+        <div id="borderless-large-input-wrapper" style={styles}>
+          <Input
+            size="large"
+            borderless
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
       </div>
-      <div id="borderless-large-input-wrapper" style={styles}>
-        <Input size="large" borderless />
-      </div>
-    </div>
 
-    <div>
-      <div style={styles}>Left icon</div>
-      <div id="left-icon-small-input-wrapper" style={styles}>
-        <Input size="small" leftIcon={<SearchIcon />} />
+      <div>
+        <div style={styles}>Left icon</div>
+        <div id="left-icon-small-input-wrapper" style={styles}>
+          <Input
+            size="small"
+            leftIcon={<SearchIcon />}
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
+        <div id="left-icon-large-input-wrapper" style={styles}>
+          <Input
+            size="large"
+            leftIcon={<SearchIcon />}
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
       </div>
-      <div id="left-icon-large-input-wrapper" style={styles}>
-        <Input size="large" leftIcon={<SearchIcon />} />
-      </div>
-    </div>
 
-    <div>
-      <div style={styles}>Right icon</div>
-      <div id="right-icon-small-input-wrapper" style={styles}>
-        <Input size="small" rightIcon={<SearchIcon />} />
-      </div>
-      <div id="right-icon-large-input-wrapper" style={styles}>
-        <Input size="large" rightIcon={<SearchIcon />} />
+      <div>
+        <div style={styles}>Right icon</div>
+        <div id="right-icon-small-input-wrapper" style={styles}>
+          <Input
+            size="small"
+            rightIcon={<SearchIcon />}
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
+        <div id="right-icon-large-input-wrapper" style={styles}>
+          <Input
+            size="large"
+            rightIcon={<SearchIcon />}
+            value={value}
+            error={isError}
+            disabled={disabled}
+            warning={warning}
+            onChange={event => setValue(event.currentTarget.value)}
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 InputsWithDifferentStates.story = {
   name: 'Inputs with different states',
   parameters: {
     creevey: {
       tests: {
-        async ['Warning small']() {
+        async ['Plain small']() {
           const element = await this.browser.findElement({ css: '#warning-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Warning small');
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
-        async ['Warning large']() {
+        async ['Plain large']() {
           const element = await this.browser.findElement({ css: '#warning-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Warning large');
-        },
-        async ['Error small']() {
-          const element = await this.browser.findElement({ css: '#error-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Error small');
-        },
-        async ['Error large']() {
-          const element = await this.browser.findElement({ css: '#error-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Error large');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Disabled small']() {
           const element = await this.browser.findElement({ css: '#disabled-small-input-wrapper' });
@@ -140,53 +305,445 @@ InputsWithDifferentStates.story = {
           const element = await this.browser.findElement({ css: '#disabled-large-input-wrapper' });
           await this.expect(await element.takeScreenshot()).to.matchImage('Disabled large');
         },
-        async ['Disabled text small']() {
-          const element = await this.browser.findElement({ css: '#disabled-text-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Disabled text small');
-        },
-        async ['Disabled text large']() {
-          const element = await this.browser.findElement({ css: '#disabled-text-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Disabled text large');
-        },
         async ['Placeholder small']() {
           const element = await this.browser.findElement({ css: '#placeholder-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Placeholder small');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Placeholder large']() {
           const element = await this.browser.findElement({ css: '#placeholder-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Placeholder large');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Password small']() {
           const element = await this.browser.findElement({ css: '#password-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Password small');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Password large']() {
           const element = await this.browser.findElement({ css: '#password-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Password large');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Borderless small']() {
           const element = await this.browser.findElement({ css: '#borderless-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Borderless small');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Borderless large']() {
           const element = await this.browser.findElement({ css: '#borderless-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Borderless large');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Left icon small']() {
           const element = await this.browser.findElement({ css: '#left-icon-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Left icon small');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Left icon large']() {
           const element = await this.browser.findElement({ css: '#left-icon-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Left icon large');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Right icon small']() {
           const element = await this.browser.findElement({ css: '#right-icon-small-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Right icon small');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
         async ['Right icon large']() {
           const element = await this.browser.findElement({ css: '#right-icon-large-input-wrapper' });
-          await this.expect(await element.takeScreenshot()).to.matchImage('Right icon large');
+
+          const idle = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .click(element)
+            .perform();
+
+          const focused = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('err')
+            .perform();
+
+          const typed = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .sendKeys('or')
+            .perform();
+
+          const withError = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('warning')
+            .perform();
+
+          const withWarning = await element.takeScreenshot();
+
+          await this.browser
+            .actions({ bridge: true })
+            .doubleClick(element)
+            .sendKeys('disabled')
+            .perform();
+
+          const disabled = await element.takeScreenshot();
+
+          await this.expect({ idle, focused, typed, withError, withWarning, disabled }).to.matchImages();
         },
       },
     },
