@@ -95,44 +95,6 @@ ClickCheckbox.story = {
   },
 };
 
-export const WarningCheckbox: CSFStory<JSX.Element> = () => {
-  const [checked, update] = React.useState(true);
-  return (
-    <Checkbox warning checked={checked} onValueChange={update}>
-      text
-    </Checkbox>
-  );
-};
-/**
- * Checkbox. Клик по чекбоксу в состоянии "выбран" и подсветкой "warning"
- *
- * - Клик по чекбоксу
- * - 📸 состояние “не выбран чекбокс”
- */
-WarningCheckbox.story = {
-  parameters: {
-    creevey: {
-      tests: {
-        async warningChecked() {
-          const element = await this.browser.findElement({ css: '#test-element' });
-          const checkbox = await this.browser.findElement({ css: '[data-comp-name~=Checkbox]' });
-
-          const idle = await element.takeScreenshot();
-
-          await this.browser
-            .actions({ bridge: true })
-            .click(checkbox)
-            .perform();
-
-          const unchecked = await element.takeScreenshot();
-
-          await this.expect({ idle, unchecked }).to.matchImages();
-        },
-      },
-    },
-  },
-};
-
 /* polunina*/
 
 export const BasicCheckbox: CSFStory<JSX.Element> = () => {
@@ -179,49 +141,6 @@ BasicCheckbox.story = {
           const afterClicked = await element.takeScreenshot();
           // 5. сравниваем результаты
           await this.expect({ idle, afterClicked }).to.matchImages();
-        },
-      },
-    },
-  },
-};
-
-export const CheckboxLongValue: CSFStory<JSX.Element> = () => {
-  const [value, updateValue] = React.useState(false);
-  return (
-    <>
-      <div>
-        <Checkbox checked={value} onValueChange={updateValue}>
-          long text long text long text long text long text long text long text long text long text long text long text
-          long text long text long text long text long text long text long text long text long text long text long text
-          long text long text
-        </Checkbox>
-      </div>
-      <div>
-        <Checkbox checked={value} onValueChange={updateValue}></Checkbox>
-      </div>
-    </>
-  );
-};
-
-/**
- *  CheckBox. Состояние “Длиинный текст и еще один чекбокс”
- *
- *  0. 📸 дефолтное состояние
- *
- *  Profit!
- */
-
-CheckboxLongValue.story = {
-  parameters: {
-    creevey: {
-      tests: {
-        async itemSelected() {
-          // 1. находим элемент для скриншота
-          const element = await this.browser.findElement({ css: '#test-element' });
-          // 2. делаем скриншот "по умолчанию"
-          const idle = await element.takeScreenshot();
-          // 3. сравниваем результаты
-          await this.expect({ idle }).to.matchImages();
         },
       },
     },
@@ -346,25 +265,11 @@ CheckBoxStates.story = {
             .perform();
           const unChecked = await element.takeScreenshot();
 
-          await this.browser
-            .actions({ bridge: true })
-            .click(button)
-            .perform();
-          const setInitialIndeterminate = await element.takeScreenshot();
-
-          await this.browser
-            .actions({ bridge: true })
-            .click(button)
-            .perform();
-          const resetInitialIndeterminate = await element.takeScreenshot();
-
           await this.expect({
             idle,
             hover,
             checked,
             unChecked,
-            setInitialIndeterminate,
-            resetInitialIndeterminate,
           }).to.matchImages();
         },
       },
@@ -437,36 +342,6 @@ CheckboxWithError.story = {
             .sendKeys(this.keys.TAB)
             .perform();
           await this.expect(await this.takeScreenshot()).to.matchImage('tabPress');
-        },
-        async spacePressAfterClick() {
-          await this.browser
-            .actions({
-              bridge: true,
-            })
-            .click(this.browser.findElement({ css: '#test-element' }))
-            .perform();
-          await this.browser
-            .actions({ bridge: true })
-            .sendKeys(this.keys.SPACE)
-            .perform();
-          await this.expect(await this.takeScreenshot()).to.matchImage('spacePress');
-        },
-        async doubleSpacePressAfterClick() {
-          await this.browser
-            .actions({
-              bridge: true,
-            })
-            .click(this.browser.findElement({ css: '#test-element' }))
-            .perform();
-          await this.browser
-            .actions({ bridge: true })
-            .sendKeys(this.keys.SPACE)
-            .perform();
-          await this.browser
-            .actions({ bridge: true })
-            .sendKeys(this.keys.SPACE)
-            .perform();
-          await this.expect(await this.takeScreenshot()).to.matchImage('doubleSpacePress');
         },
       },
     },
