@@ -8,7 +8,7 @@ module.exports = async ({ config, mode }) => {
 
   if (isTestEnv) {
     // needs to be inserted before React (i.e. config.js)
-    config.entry.unshift('react-ui-testing/react-selenium-testing');
+    config.entry.unshift('@skbkontur/react-props2attrs');
   }
   config.entry.unshift('core-js/stable');
 
