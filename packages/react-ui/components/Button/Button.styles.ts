@@ -622,10 +622,19 @@ const styles = {
       }
 
       &:not(${cssName(styles.link(t))})${cssName(styles.disabled(t))} {
-        box-shadow: ${t.btnCheckedShadow} !important;
-        background: ${t.btnCheckedBg} !important;
-        color: ${t.btnCheckedTextColor} !important;
-        border: ${t.btnDefaultCheckedBorder} !important;
+        /* box-shadow: 0 0 0 1px #a0a0a0 !important; */
+        box-shadow: ${t.btnCheckedDisabledShadow} !important;
+        background: ${t.btnCheckedDisabledBg} !important;
+        color: #ffffff !important;
+
+        ${cssName(styles.caption())} {
+          opacity: 0.7 !important;
+        }
+
+        ${cssName(styles.arrow())} {
+          background: ${t.btnCheckedDisabledBg} !important;
+          box-shadow: ${t.btnCheckedDisabledShadowArrow} !important;
+        }
       }
 
       &,

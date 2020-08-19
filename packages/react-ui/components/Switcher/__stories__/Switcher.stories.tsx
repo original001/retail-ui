@@ -2,6 +2,7 @@ import React from 'react';
 import { CSFStory } from 'creevey';
 
 import { Switcher } from '../Switcher';
+import { Gapped } from '../../Gapped';
 
 class Component extends React.Component<{ items: string[]; error?: boolean }, { value: string }> {
   public state = {
@@ -58,7 +59,13 @@ export const Errored = () => {
 Errored.story = { name: 'errored', parameters: { creevey: { skip: [{ in: 'chromeFlat' }] } } };
 
 export const Disabled = () => {
-  return <Switcher disabled value={'One'} label={'Label for Switcher'} items={['One', 'Two', 'Three']} />;
+  return (
+    <Gapped vertical>
+      <Switcher disabled value={'One'} label={'Label for Switcher'} items={['One', 'Two', 'Three']} />
+      <Switcher disabled value={'Two'} label={'Label for Switcher'} items={['One', 'Two', 'Three']} />
+      <Switcher disabled value={'Three'} label={'Label for Switcher'} items={['One', 'Two', 'Three']} />
+    </Gapped>
+  );
 };
 
 Disabled.story = { name: 'disabled', parameters: { creevey: { skip: [{ in: 'chromeFlat' }] } } };
