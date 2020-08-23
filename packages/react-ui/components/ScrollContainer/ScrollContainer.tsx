@@ -5,13 +5,12 @@ import cn from 'classnames';
 import * as LayoutEvents from '../../lib/LayoutEvents';
 import { getScrollWidth } from '../../lib/dom/getScrollWidth';
 import { Nullable } from '../../typings/utility-types';
-import { isChrome, isOpera, isSafari } from '../../lib/utils';
+import { isChrome, isOpera, isSafari } from '../../lib/client';
 
 import { jsStyles } from './ScrollContainer.styles';
 
 const PADDING_RIGHT = 30;
 const MIN_SCROLL_SIZE = 20;
-const SCROLL_HIDDEN = isChrome || isOpera || isSafari;
 
 export type ScrollContainerScrollState = 'top' | 'scroll' | 'bottom';
 
@@ -354,6 +353,7 @@ export class ScrollContainer extends React.Component<ScrollContainerProps, Scrol
   }
 
   private getMarginRight(): number {
+    const SCROLL_HIDDEN = isChrome() || isOpera() || isSafari();
     return -1 * (PADDING_RIGHT + (SCROLL_HIDDEN ? 0 : getScrollWidth()));
   }
 }

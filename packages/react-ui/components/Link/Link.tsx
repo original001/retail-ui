@@ -142,7 +142,7 @@ export class Link extends React.Component<LinkProps, LinkState> {
       // focus event fires before keyDown eventlistener
       // so we should check tabPressed in async way
       process.nextTick(() => {
-        if (tabListener.isTabPressed) {
+        if (tabListener()?.isTabPressed) {
           this.setState({ focusedByTab: true });
         }
       });

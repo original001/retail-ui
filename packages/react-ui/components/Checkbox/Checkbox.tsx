@@ -7,7 +7,7 @@ import { tabListener } from '../../lib/events/tabListener';
 import { Theme } from '../../lib/theming/Theme';
 import { ThemeContext } from '../../lib/theming/ThemeContext';
 import { OkIcon, SquareIcon } from '../../internal/icons/16px';
-import { isEdge, isFirefox, isIE11 } from '../../lib/utils';
+import { isEdge, isFirefox, isIE11 } from '../../lib/client';
 
 import { jsStyles } from './Checkbox.styles';
 
@@ -93,7 +93,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
    * @public
    */
   public focus() {
-    tabListener.isTabPressed = true;
+    tabListener()?.setIsTabPressed(true);
     this.input?.focus();
   }
 
@@ -150,7 +150,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
 
     const rootClass = cn({
       [jsStyles.root(this.theme)]: true,
-      [jsStyles.rootFallback()]: isIE11 || isEdge,
+      [jsStyles.rootFallback()]: isIE11() || isEdge(),
       [jsStyles.disabled(this.theme)]: Boolean(props.disabled),
       [jsStyles.checked(this.theme)]: Boolean(props.checked),
       [jsStyles.indeterminate(this.theme)]: isIndeterminate,
@@ -173,14 +173,14 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
     if (children) {
       const captionClass = cn({
         [jsStyles.caption(this.theme)]: true,
-        [jsStyles.captionIE11()]: isIE11 || isEdge,
+        [jsStyles.captionIE11()]: isIE11() || isEdge(),
       });
       caption = <span className={captionClass}>{children}</span>;
     }
 
     const iconClass = cn({
       [jsStyles.iconUnchecked()]: !props.checked && !isIndeterminate,
-      [jsStyles.iconFixBaseline()]: isFirefox || isIE11 || isEdge,
+      [jsStyles.iconFixBaseline()]: isFirefox() || isIE11() || isEdge(),
     });
 
     const box = (
@@ -203,7 +203,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
       // focus event fires before keyDown eventlistener
       // so we should check tabPressed in async way
       process.nextTick(() => {
-        if (tabListener.isTabPressed) {
+        if (tabListener()?.isTabPressed) {
           this.setState({ focusedByTab: true });
         }
       });

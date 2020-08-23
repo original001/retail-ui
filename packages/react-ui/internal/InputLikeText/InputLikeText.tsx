@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import { isKeyTab, isShortcutPaste } from '../../lib/events/keyboard/identifiers';
 import { MouseDrag, MouseDragEventHandler } from '../../lib/events/MouseDrag';
-import { isEdge, isIE11 } from '../../lib/utils';
+import { isEdge, isIE11 } from '../../lib/client';
 import { Nullable } from '../../typings/utility-types';
 import { removeAllSelections, selectNodeContents } from '../../components/DateInput/helpers/SelectionHelpers';
 import { InputProps, InputIconType, InputState } from '../../components/Input';
@@ -88,7 +88,7 @@ export class InputLikeText extends React.Component<InputLikeTextProps, InputLike
     if (this.focusTimeout) {
       clearInterval(this.focusTimeout);
     }
-    this.focusTimeout = window.setTimeout(() => (isIE11 || isEdge) && this.node && this.node.focus(), 0);
+    this.focusTimeout = window.setTimeout(() => (isIE11() || isEdge()) && this.node && this.node.focus(), 0);
   };
 
   public componentDidMount() {
@@ -157,9 +157,9 @@ export class InputLikeText extends React.Component<InputLikeTextProps, InputLike
       [jsInputStyles.warning(this.theme)]: !!warning,
       [jsInputStyles.error(this.theme)]: !!error,
       [jsInputStyles.disabled(this.theme)]: !!disabled,
-      [jsInputStyles.focusFallback(this.theme)]: focused && (isIE11 || isEdge),
-      [jsInputStyles.warningFallback(this.theme)]: !!warning && (isIE11 || isEdge),
-      [jsInputStyles.errorFallback(this.theme)]: !!error && (isIE11 || isEdge),
+      [jsInputStyles.focusFallback(this.theme)]: focused && (isIE11() || isEdge()),
+      [jsInputStyles.warningFallback(this.theme)]: !!warning && (isIE11() || isEdge()),
+      [jsInputStyles.errorFallback(this.theme)]: !!error && (isIE11() || isEdge()),
     });
 
     const wrapperClass = cn(jsInputStyles.wrapper(), {
@@ -187,7 +187,7 @@ export class InputLikeText extends React.Component<InputLikeTextProps, InputLike
           {this.renderPlaceholder()}
         </span>
         {rightSide}
-        {isIE11 && focused && <HiddenInput nodeRef={this.hiddenInputRef} />}
+        {isIE11() && focused && <HiddenInput nodeRef={this.hiddenInputRef} />}
       </span>
     );
   }
@@ -306,7 +306,7 @@ export class InputLikeText extends React.Component<InputLikeTextProps, InputLike
       return;
     }
 
-    if (isIE11 && isShortcutPaste(e) && this.hiddenInput) {
+    if (isIE11() && isShortcutPaste(e) && this.hiddenInput) {
       this.frozen = true;
       setTimeout(() => {
         if (this.lastSelectedInnerNode) {
@@ -349,13 +349,13 @@ export class InputLikeText extends React.Component<InputLikeTextProps, InputLike
 
   private handleFocus = (e: React.FocusEvent<HTMLElement>) => {
     if (this.props.disabled) {
-      if (isIE11) {
+      if (isIE11()) {
         selectNodeContents(document.body, 0, 0);
       }
       return;
     }
 
-    if ((isIE11 || isEdge) && this.frozen) {
+    if ((isIE11() || isEdge()) && this.frozen) {
       this.frozen = false;
       if (this.state.focused) {
         return;
@@ -375,11 +375,11 @@ export class InputLikeText extends React.Component<InputLikeTextProps, InputLike
       return;
     }
 
-    if ((isIE11 || isEdge) && this.frozenBlur) {
+    if ((isIE11() || isEdge()) && this.frozenBlur) {
       this.frozenBlur = false;
       return;
     }
-    if ((isIE11 || isEdge) && this.frozen) {
+    if ((isIE11() || isEdge()) && this.frozen) {
       return;
     }
 
@@ -413,18 +413,18 @@ export class InputLikeText extends React.Component<InputLikeTextProps, InputLike
       case 'large':
         return {
           [jsInputStyles.sizeLarge(this.theme)]: true,
-          [jsInputStyles.sizeLargeFallback(this.theme)]: isIE11 || isEdge,
+          [jsInputStyles.sizeLargeFallback(this.theme)]: isIE11() || isEdge(),
         };
       case 'medium':
         return {
           [jsInputStyles.sizeMedium(this.theme)]: true,
-          [jsInputStyles.sizeMediumFallback(this.theme)]: isIE11 || isEdge,
+          [jsInputStyles.sizeMediumFallback(this.theme)]: isIE11() || isEdge(),
         };
       case 'small':
       default:
         return {
           [jsInputStyles.sizeSmall(this.theme)]: true,
-          [jsInputStyles.sizeSmallFallback(this.theme)]: isIE11 || isEdge,
+          [jsInputStyles.sizeSmallFallback(this.theme)]: isIE11() || isEdge(),
         };
     }
   };

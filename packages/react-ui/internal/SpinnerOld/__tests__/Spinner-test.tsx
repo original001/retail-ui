@@ -15,7 +15,7 @@ const render = (props = {}) => mount(<SpinnerOld {...props} />);
 describe('SpinnerOld', () => {
   describe('SVG animation', () => {
     beforeEach(() => {
-      require('../../../lib/utils').__setSvgAnimationSupport(true);
+      require('../../../lib/utils').__setSvgAnimationSupport(() => true);
     });
 
     it('renders default SpinnerOld', () => {
@@ -66,7 +66,7 @@ describe('SpinnerOld', () => {
 
   describe('Fallback animation', () => {
     beforeEach(() => {
-      require('../../../lib/utils').__setSvgAnimationSupport(false);
+      require('../../../lib/utils').__setSvgAnimationSupport(() => false);
     });
 
     it('renders default SpinnerOld', () => {

@@ -1,3 +1,5 @@
+import { isClient } from '../client';
+
 enum MouseDragEventType {
   Start = 'mousedragstart',
   Move = 'mousedragmove',
@@ -5,7 +7,7 @@ enum MouseDragEventType {
   Leave = 'mousedragleave',
 }
 
-type MouseDragEvent = MouseEvent
+type MouseDragEvent = MouseEvent;
 
 type HandlerNative<E = MouseEvent> = (e: E) => void;
 type Handler = (e: MouseDragEvent) => void;
@@ -15,8 +17,7 @@ export type MouseDragEventHandler = (e: MouseDragEvent) => void;
 const items: Map<HTMLElement, MouseDrag> = new Map();
 
 const documentHandleMouseUp: HandlerNative = e => items.forEach(mouseDrag => mouseDrag.handleMouseUp(e));
-
-document.documentElement.addEventListener('mouseup', documentHandleMouseUp);
+let listenerAdded = false;
 
 /**
  * ## Класс для отслеживания эффекта перетаскивания мышкой
@@ -78,6 +79,10 @@ export class MouseDrag {
   private elem: HTMLElement | null;
 
   public constructor(elem: HTMLElement) {
+    if (isClient() && !listenerAdded) {
+      document.documentElement.addEventListener('mouseup', documentHandleMouseUp);
+      listenerAdded = true;
+    }
     this.elem = elem;
     this.elem.addEventListener('mousedown', this.handleMouseDown);
     this.elem.addEventListener('mousemove', this.handleMouseMove);

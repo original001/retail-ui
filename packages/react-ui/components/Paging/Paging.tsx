@@ -6,7 +6,8 @@ import { isKeyArrowLeft, isKeyArrowRight, isKeyEnter } from '../../lib/events/ke
 import { locale } from '../../lib/locale/decorators';
 import { Nullable } from '../../typings/utility-types';
 import { tabListener } from '../../lib/events/tabListener';
-import { emptyHandler, isIE11 } from '../../lib/utils';
+import { emptyHandler } from '../../lib/utils';
+import { isIE11 } from '../../lib/client';
 import { ThemeContext } from '../../lib/theming/ThemeContext';
 import { Theme } from '../../lib/theming/Theme';
 import { ArrowChevronRightIcon } from '../../internal/icons/16px';
@@ -92,6 +93,7 @@ export class Paging extends React.Component<PagingProps, PagingState> {
   private container: HTMLSpanElement | null = null;
 
   public componentDidMount() {
+    tabListener();
     const { useGlobalListener } = this.props;
     if (useGlobalListener) {
       this.addGlobalListener();
@@ -259,7 +261,7 @@ export class Paging extends React.Component<PagingProps, PagingState> {
   };
 
   private handleMouseDownPageLink = () => {
-    if (isIE11) {
+    if (isIE11()) {
       // Клик по span внутри контейнера с tabindex="0" переносит фокус именно на этот span.
       // Поэтому горячие клавиши работают пока span существует на странице.
       setTimeout(() => this.container && this.container.focus(), 0);
@@ -318,7 +320,7 @@ export class Paging extends React.Component<PagingProps, PagingState> {
     // focus event fires before keyDown eventlistener
     // so we should check tabPressed in async way
     process.nextTick(() => {
-      if (tabListener.isTabPressed) {
+      if (tabListener()?.isTabPressed) {
         this.setState({ focusedByTab: true });
       }
     });

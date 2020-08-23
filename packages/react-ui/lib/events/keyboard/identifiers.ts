@@ -1,4 +1,4 @@
-import { isMac } from '../../utils';
+import { isMac } from '../../client';
 
 import { extractCode } from './extractCode';
 import { KeyboardEventCodes as Codes } from './KeyboardEventCodes';
@@ -9,21 +9,21 @@ type ISMod = (is?: IS) => IS;
 type ISSome = (...is: IS[]) => IS;
 
 export const isShortcutCopy: IS = e =>
-  ((isMac ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyC) ||
-  (!isMac && e.ctrlKey && isKeyInsert(e)) ||
+  ((isMac() ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyC) ||
+  (!isMac() && e.ctrlKey && isKeyInsert(e)) ||
   e.key === 'Copy';
 
 export const isShortcutPaste: IS = e =>
-  ((isMac ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyV) ||
-  (!isMac && e.shiftKey && isKeyInsert(e)) ||
+  ((isMac() ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyV) ||
+  (!isMac() && e.shiftKey && isKeyInsert(e)) ||
   e.key === 'Paste';
 
 export const isShortcutCut: IS = e =>
-  ((isMac ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyX) ||
-  (!isMac && e.shiftKey && isKeyDelete(e)) ||
+  ((isMac() ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyX) ||
+  (!isMac() && e.shiftKey && isKeyDelete(e)) ||
   e.key === 'Cut';
 
-export const isShortcutSelectAll: IS = e => (isMac ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyA;
+export const isShortcutSelectAll: IS = e => (isMac() ? e.metaKey : e.ctrlKey) && extractCode(e) === Codes.KeyA;
 
 export const isKeyEscape: IS = e => e.key === 'Escape' || e.key === 'Esc';
 export const isKeyHome: IS = e => e.key === 'Home';

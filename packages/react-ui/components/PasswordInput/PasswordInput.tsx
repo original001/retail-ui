@@ -6,7 +6,7 @@ import { KeyboardEventCodes as Codes } from '../../lib/events/keyboard/KeyboardE
 import { Input, InputProps } from '../Input';
 import { Nullable } from '../../typings/utility-types';
 import { EyeClosedIcon, EyeOpenedIcon } from '../../internal/icons/16px';
-import { isIE11 } from '../../lib/utils';
+import { isIE11 } from '../../lib/client';
 
 import { jsStyles } from './PasswordInput.styles';
 
@@ -49,7 +49,7 @@ export class PasswordInput extends React.Component<PasswordInputProps, PasswordI
     }
 
     // @ts-ignore
-    if (isIE11 && !window.document.msCapsLockWarningOff) {
+    if (isIE11() && !window.document.msCapsLockWarningOff) {
       // turns off default ie capslock warning
       // @ts-ignore
       window.document.msCapsLockWarningOff = true;
@@ -133,7 +133,11 @@ export class PasswordInput extends React.Component<PasswordInputProps, PasswordI
     return (
       <span className={jsStyles.iconWrapper()}>
         {capsLockEnabled && <span className={jsStyles.capsLockDetector()} />}
-        <span data-tid="PasswordInputEyeIcon" className={jsStyles.toggleVisibility()} onClick={this.handleToggleVisibility}>
+        <span
+          data-tid="PasswordInputEyeIcon"
+          className={jsStyles.toggleVisibility()}
+          onClick={this.handleToggleVisibility}
+        >
           {this.state.visible ? <EyeOpenedIcon size={14} /> : <EyeClosedIcon size={14} />}
         </span>
       </span>

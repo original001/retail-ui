@@ -100,8 +100,8 @@ export class Spinner extends React.Component<SpinnerProps> {
     return (
       <div className={jsStyles.spinner()}>
         <span className={jsStyles.inner()}>
-          {hasSvgAnimationSupport && this.renderSpinner(type, dimmed)}
-          {!hasSvgAnimationSupport && <SpinnerFallback type={type} dimmed={dimmed} />}
+          {hasSvgAnimationSupport() && this.renderSpinner(type, dimmed)}
+          {!hasSvgAnimationSupport() && <SpinnerFallback type={type} dimmed={dimmed} />}
         </span>
         {caption && this.renderCaption(type, caption)}
       </div>

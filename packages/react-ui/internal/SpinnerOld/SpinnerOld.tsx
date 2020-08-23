@@ -76,12 +76,11 @@ export class SpinnerOld extends React.Component<SpinnerOldProps> {
 
   private renderMain() {
     const { type, caption = this.locale.loading, dimmed } = this.props;
-
     return (
       <div className={jsStyles.spinner()}>
         <span className={jsStyles.inner()}>
-          {hasSvgAnimationSupport && this.renderSpinnerOld(type)}
-          {!hasSvgAnimationSupport && <SpinnerOldFallback type={type} dimmed={dimmed} />}
+          {hasSvgAnimationSupport() && this.renderSpinnerOld(type)}
+          {!hasSvgAnimationSupport() && <SpinnerOldFallback type={type} dimmed={dimmed} />}
         </span>
         {caption && this.renderCaption(type, caption)}
       </div>

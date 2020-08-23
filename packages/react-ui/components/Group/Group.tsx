@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-import { isIE11, isEdge } from '../../lib/utils';
+import { isIE11, isEdge } from '../../lib/client';
 import { Corners } from '../Button/Corners';
 import { Nullable } from '../../typings/utility-types';
 import { isButton } from '../Button';
@@ -70,7 +70,7 @@ export class Group extends React.Component<GroupProps> {
               className={cn({
                 [jsStyles.fixed()]: !isWidthInPercent,
                 [jsStyles.stretch()]: isWidthInPercent,
-                [jsStyles.stretchFallback()]: Boolean(isWidthInPercent && this.props.width && (isIE11 || isEdge)),
+                [jsStyles.stretchFallback()]: Boolean(isWidthInPercent && this.props.width && (isIE11() || isEdge())),
               })}
             >
               <div className={itemCss}>{child}</div>

@@ -1,10 +1,10 @@
 import React from 'react';
 import cn from 'classnames';
 
-import { isIE11, isEdge } from '../../lib/utils';
 import { tabListener } from '../../lib/events/tabListener';
 import { Theme } from '../../lib/theming/Theme';
 import { ThemeContext } from '../../lib/theming/ThemeContext';
+import { isIE11, isEdge } from '../../lib/client';
 
 import { jsStyles } from './Button.styles';
 import { Corners } from './Corners';
@@ -126,7 +126,7 @@ export class Button extends React.Component<ButtonProps, ButtonState> {
 
   public componentDidMount() {
     if (this.props.autoFocus) {
-      tabListener.isTabPressed = true;
+      tabListener()?.setIsTabPressed(true);
       this.focus();
     }
   }
@@ -180,7 +180,7 @@ export class Button extends React.Component<ButtonProps, ButtonState> {
         [jsStyles.focus(this.theme)]: this.state.focusedByTab || !!this.props.visuallyFocused,
         [jsStyles.checked(this.theme)]: !!this.props.checked && !this.props.disabled,
         [jsStyles.disabled(this.theme)]: !!this.props.disabled || !!this.props.loading,
-        [jsStyles.fallback(this.theme)]: isIE11 || isEdge,
+        [jsStyles.fallback(this.theme)]: isIE11() || isEdge(),
       }),
       style: {
         borderTopLeftRadius: corners & Corners.TOP_LEFT ? 0 : undefined,
@@ -311,7 +311,7 @@ export class Button extends React.Component<ButtonProps, ButtonState> {
       // focus event fires before keyDown eventlistener
       // so we should check tabPressed in async way
       process.nextTick(() => {
-        if (tabListener.isTabPressed) {
+        if (tabListener()?.isTabPressed) {
           this.setState({ focusedByTab: true });
         }
       });

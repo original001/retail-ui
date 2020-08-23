@@ -59,8 +59,9 @@ export class Toggle extends React.Component<ToggleProps, ToggleState> {
   }
 
   public componentDidMount() {
+    tabListener();
     if (this.props.autoFocus) {
-      tabListener.isTabPressed = true;
+      tabListener()?.setIsTabPressed(true);
       this.focus();
     }
   }
@@ -70,7 +71,7 @@ export class Toggle extends React.Component<ToggleProps, ToggleState> {
    */
   public focus = () => {
     if (this.input) {
-      tabListener.isTabPressed = true;
+      tabListener()?.setIsTabPressed(true);
       this.input.focus();
     }
   };
@@ -161,7 +162,7 @@ export class Toggle extends React.Component<ToggleProps, ToggleState> {
       this.props.onFocus(event);
     }
 
-    if (tabListener.isTabPressed) {
+    if (tabListener()?.isTabPressed) {
       this.setState({ focusByTab: true });
     }
   };

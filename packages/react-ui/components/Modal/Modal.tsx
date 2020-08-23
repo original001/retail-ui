@@ -12,7 +12,7 @@ import { ModalStack, ModalStackSubscription } from '../../lib/ModalStack';
 import { ResizeDetector } from '../../internal/ResizeDetector';
 import { ThemeContext } from '../../lib/theming/ThemeContext';
 import { Theme } from '../../lib/theming/Theme';
-import { isIE11 } from '../../lib/utils';
+import { isIE11 } from '../../lib/client';
 
 import { ModalContext, ModalContextProps } from './ModalContext';
 import { ModalFooter } from './ModalFooter';
@@ -95,11 +95,6 @@ export class Modal extends React.Component<ModalProps, ModalState> {
         );
       }
     },
-  };
-
-  public static defaultProps = { 
-    // NOTE: в ie нормально не работает
-    disableFocusLock: isIE11 
   };
 
   public state: ModalState = {
@@ -200,6 +195,12 @@ export class Modal extends React.Component<ModalProps, ModalState> {
       containerStyle.width = 'auto';
     }
 
+    let { disableFocusLock } = this.props;
+    if (typeof disableFocusLock === 'undefined') {
+      // NOTE: в ie нормально не работает
+      disableFocusLock = isIE11();
+    }
+
     return (
       <RenderContainer>
         <ZIndex priority={'Modal'} className={jsStyles.root()}>
@@ -223,7 +224,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
             >
               <div className={jsStyles.window(this.theme)} style={style}>
                 <ResizeDetector onResize={this.handleResize}>
-                  <FocusLock disabled={this.props.disableFocusLock} autoFocus={false}>
+                  <FocusLock disabled={disableFocusLock} autoFocus={false}>
                     {!hasHeader && !this.props.noClose ? (
                       <ZIndex priority={'ModalCross'} className={jsStyles.closeWrapper()}>
                         <ModalClose requestClose={this.requestClose} disableClose={this.props.disableClose} />

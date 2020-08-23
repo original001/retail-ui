@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import debounce from 'lodash.debounce';
 
-import { isFirefox } from './utils';
+import { isFirefox } from './client';
 
 interface FocusOutsideEventHandler {
   elements: HTMLElement[] | (() => HTMLElement[]);
@@ -20,13 +20,13 @@ function addHandleEvent() {
    *   ¯\_(ツ)_/¯
    */
   document.body.addEventListener(
-    isFirefox ? 'focus' : ('focusin' as 'focus'),
-    isFirefox ? debounce(handleNativeFocus, 0, { leading: true, trailing: false }) : handleNativeFocus,
-    isFirefox,
+    isFirefox() ? 'focus' : ('focusin' as 'focus'),
+    isFirefox() ? debounce(handleNativeFocus, 0, { leading: true, trailing: false }) : handleNativeFocus,
+    isFirefox(),
   );
 }
 
-if (typeof(document) !== 'undefined') {
+if (typeof document !== 'undefined') {
   if (document.readyState === 'complete') {
     addHandleEvent();
   } else {

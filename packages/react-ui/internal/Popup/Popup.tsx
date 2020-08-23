@@ -11,10 +11,11 @@ import * as LayoutEvents from '../../lib/LayoutEvents';
 import { ZIndex } from '../ZIndex';
 import { RenderContainer } from '../RenderContainer';
 import { FocusEventType, MouseEventType } from '../../typings/event-types';
-import { isFunction, isIE11, isEdge } from '../../lib/utils';
+import { isFunction } from '../../lib/utils';
+import { isIE11, isEdge } from '../../lib/client';
 import { ThemeContext } from '../../lib/theming/ThemeContext';
 import { Theme } from '../../lib/theming/Theme';
-import { safePropTypesInstanceOf } from "../../lib/SSRSafe";
+import { safePropTypesInstanceOf } from '../../lib/SSRSafe';
 import { isTestEnv } from '../../lib/currentEnvironment';
 
 import { PopupPin } from './PopupPin';
@@ -351,7 +352,7 @@ export class Popup extends React.Component<PopupProps, PopupState> {
             className={cn({
               [jsStyles.popup(this.theme)]: true,
               [jsStyles.shadow(this.theme)]: hasShadow,
-              [jsStyles.shadowFallback(this.theme)]: hasShadow && (isIE11 || isEdge),
+              [jsStyles.shadowFallback(this.theme)]: hasShadow && (isIE11() || isEdge()),
               [jsStyles.popupIgnoreHover()]: ignoreHover,
               ...(disableAnimations
                 ? {}
@@ -404,7 +405,7 @@ export class Popup extends React.Component<PopupProps, PopupState> {
      * shadow to the pin too.
      */
     const isDefaultBorderColor = this.theme.popupBorderColor === POPUP_BORDER_DEFAULT_COLOR;
-    const pinBorder = isIE11 && isDefaultBorderColor ? 'rgba(0, 0, 0, 0.09)' : this.theme.popupBorderColor;
+    const pinBorder = isIE11() && isDefaultBorderColor ? 'rgba(0, 0, 0, 0.09)' : this.theme.popupBorderColor;
 
     const { pinSize, pinOffset, hasShadow, backgroundColor, borderColor } = this.props;
 
