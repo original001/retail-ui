@@ -128,6 +128,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
         onMouseLeave={this.handleMouseLeave}
         className={className}
         tabIndex={-1}
+        state={state}
       >
         {iconElement}
         {content}

@@ -98,13 +98,11 @@ export class InternalMenu extends React.Component<MenuProps, MenuState> {
   }
 
   private renderMain() {
-    const enableIconPadding = React.Children.toArray(this.props.children).some(
-      x => React.isValidElement(x) && x.props.icon,
-    );
-
     if (this.isEmpty()) {
       return null;
     }
+
+    const menuItems = getActiveMenuItems(this.props.children);
 
     return (
       <div
@@ -129,55 +127,69 @@ export class InternalMenu extends React.Component<MenuProps, MenuState> {
           preventWindowScroll={this.props.preventWindowScroll}
           onScrollStateChange={this.handleScrollStateChange}
         >
-          {React.Children.map(this.props.children, (child, index) => {
-            if (typeof child === 'string' || typeof child === 'number' || child == null) {
-              return child;
-            }
-            if (React.isValidElement(child) && typeof child.type === 'string') {
-              return child;
-            }
-
-            if (enableIconPadding && (isMenuItem(child) || isMenuHeader(child))) {
-              child = React.cloneElement(child, {
-                _enableIconPadding: true,
-              });
-            }
-
-            if (isActiveElement(child)) {
-              const highlight = this.state.highlightedIndex === index;
-
-              let ref = child.ref;
-              const originalRef = ref;
-              if (highlight) {
-                ref = menuItem => this.refHighlighted(originalRef, menuItem);
-              }
-
-              return React.cloneElement<MenuItemProps, MenuItem>(child, {
-                ref,
-                state: highlight ? 'hover' : child.props.state,
-                onClick: this.select.bind(this, index, false),
-                onMouseEnter: event => {
-                  this.highlightItem(index);
-                  if (isMenuItem(child) && child.props.onMouseEnter) {
-                    child.props.onMouseEnter(event);
-                  }
-                },
-                onMouseLeave: event => {
-                  this.unhighlight();
-                  if (isMenuItem(child) && child.props.onMouseLeave) {
-                    child.props.onMouseLeave(event);
-                  }
-                },
-              });
-            }
-
-            return child;
-          })}
+          {this.renderMenuElements(this.props.children, menuItems)}
         </ScrollContainer>
         {this.props.footer ? this.renderFooter() : null}
       </div>
     );
   }
+
+  private renderMenuElements = (children: React.ReactNode, menuItems: React.ReactNode[]): React.ReactNode[] => {
+    const enableIconPadding = React.Children.toArray(this.props.children).some(
+      x => React.isValidElement(x) && x.props.icon,
+    );
+
+    return React.Children.map(children, (child, index) => {
+      const itemIndex = menuItems.findIndex(item => child === item);
+
+      if (typeof child === 'string' || typeof child === 'number' || child == null) {
+        return child;
+      }
+      if (React.isValidElement(child) && typeof child.type === 'string' && !child.props.children) {
+        return child;
+      }
+
+      if (enableIconPadding && (isMenuItem(child) || isMenuHeader(child))) {
+        child = React.cloneElement(child, {
+          _enableIconPadding: true,
+        });
+      }
+
+      if (isActiveElement(child)) {
+        const highlight = this.state.highlightedIndex === itemIndex;
+
+        let ref = child.ref;
+        const originalRef = ref;
+        if (highlight) {
+          ref = menuItem => this.refHighlighted(originalRef, menuItem);
+        }
+
+        return React.cloneElement<MenuItemProps, MenuItem>(child, {
+          ref,
+          state: highlight ? 'hover' : child.props.state,
+          onClick: this.select.bind(this, itemIndex, false),
+          onMouseEnter: event => {
+            this.highlightItem(itemIndex);
+            if (isMenuItem(child) && child.props.onMouseEnter) {
+              child.props.onMouseEnter(event);
+            }
+          },
+          onMouseLeave: event => {
+            this.unhighlight();
+            if (isMenuItem(child) && child.props.onMouseLeave) {
+              child.props.onMouseLeave(event);
+            }
+          },
+        });
+      } else if (React.isValidElement(child) && child.props.children) {
+        return React.cloneElement(child, {
+          children: this.renderMenuElements(child.props.children, menuItems),
+        });
+      }
+
+      return child;
+    });
+  };
 
   private renderHeader = () => {
     return (
@@ -287,7 +299,7 @@ export class InternalMenu extends React.Component<MenuProps, MenuState> {
   };
 
   private select(index: number, shouldHandleHref: boolean, event: React.SyntheticEvent<HTMLElement>): boolean {
-    const item = childrenToArray(this.props.children)[index];
+    const item = getActiveMenuItems(this.props.children)[index];
 
     if (isActiveElement(item)) {
       if (shouldHandleHref && item.props.href) {
@@ -321,7 +333,7 @@ export class InternalMenu extends React.Component<MenuProps, MenuState> {
 
   private move(step: number) {
     this.setState((state, props) => {
-      const children = childrenToArray(props.children);
+      const children = getActiveMenuItems(props.children);
       if (!children.some(isActiveElement)) {
         return null;
       }
@@ -398,6 +410,20 @@ function childrenToArray(children: React.ReactNode): React.ReactNode[] {
   // Use forEach instead of map to avoid cloning for key unifying.
   React.Children.forEach(children, child => {
     ret.push(child);
+  });
+  return ret;
+}
+
+function getActiveMenuItems(children: React.ReactNode): React.ReactNode[] {
+  const ret: React.ReactNode[] = [];
+  // Use forEach instead of map to avoid cloning for key unifying.
+  React.Children.forEach(children, child => {
+    if (isActiveElement(child)) {
+      ret.push(child);
+    } else if (React.isValidElement(child) && child.props.children) {
+      const nestedMenuItems = getActiveMenuItems(child.props.children);
+      nestedMenuItems.forEach(item => ret.push(item));
+    }
   });
   return ret;
 }

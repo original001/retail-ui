@@ -34,11 +34,17 @@ export default {
 
 export const SimpleExample: CSFStory<JSX.Element> = () => (
   <DropdownMenu caption={<Button use="primary">Открыть меню</Button>}>
-    <MenuHeader>Заголовок меню</MenuHeader>
-    <MenuSeparator />
-    <MenuItem onClick={() => Toast.push('Раз')}>Раз</MenuItem>
-    <MenuItem onClick={() => Toast.push('Два')}>Два</MenuItem>
-    <MenuItem onClick={() => Toast.push('Три')}>Три</MenuItem>
+    <div>
+      <>
+        <MenuItem onClick={() => Toast.push('Раз')}>Раз</MenuItem>
+        <MenuSeparator />
+      </>
+      <div>
+        <MenuItem onClick={() => Toast.push('Два')}>Два</MenuItem>
+      </div>
+      <MenuSeparator />
+      <MenuItem onClick={() => Toast.push('Три')}>Три</MenuItem>
+    </div>
   </DropdownMenu>
 );
 SimpleExample.story = {
